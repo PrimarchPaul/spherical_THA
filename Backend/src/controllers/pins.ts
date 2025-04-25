@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import { sequelize } from '@services/database';
-import { Pin } from '@models/pins';
+import { Pin } from '@models/pin';
 import { savePin } from '@services/mapbox';
 
 export async function getPins(req: Request, res: Response) {
@@ -14,12 +14,12 @@ export async function getPins(req: Request, res: Response) {
         }
 
         //get all pins from the session id from the database
-        const pins = await Pin.findAll({
+        const pin = await Pin.findAll({
             attributes: ['id', 'sessionId', 'longitude', 'latitude', 'pinName', 'pinDescription'],
             where: { sessionId },
         })
 
-        res.status(200).json({ pins })
+        res.status(200).json({ pin })
 
     } catch (error) {
         console.error("---controllers::client::getpins---", error);

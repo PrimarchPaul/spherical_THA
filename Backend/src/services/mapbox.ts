@@ -1,6 +1,6 @@
 import mbx from '@mapbox/mapbox-sdk';
 import  Geocoding  from '@mapbox/mapbox-sdk/services/geocoding';
-import { Pin } from '@models/pins';
+import { Pin } from '@models/pin';
 
 const mapboxClient = mbx({ accessToken: process.env.MAPBOX_API_KEY! });
 const MapboxGeocoding = Geocoding(mapboxClient);

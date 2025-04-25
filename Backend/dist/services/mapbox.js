@@ -16,7 +16,7 @@ exports.reverseLocation = reverseLocation;
 exports.savePin = savePin;
 const mapbox_sdk_1 = __importDefault(require("@mapbox/mapbox-sdk"));
 const geocoding_1 = __importDefault(require("@mapbox/mapbox-sdk/services/geocoding"));
-const pins_1 = require("@models/pins");
+const pin_1 = require("@models/pin");
 const mapboxClient = (0, mapbox_sdk_1.default)({ accessToken: process.env.MAPBOX_API_KEY });
 const MapboxGeocoding = (0, geocoding_1.default)(mapboxClient);
 function reverseLocation(lat, lng) {
@@ -52,7 +52,7 @@ function savePin(pin) {
             if (!pin) {
                 throw new Error('Pin is required');
             }
-            const existingPin = yield pins_1.Pin.findOne({
+            const existingPin = yield pin_1.Pin.findOne({
                 where: {
                     sessionId: pin.sessionId,
                     id: pin.id,
@@ -62,7 +62,7 @@ function savePin(pin) {
                 yield existingPin.update(pin);
                 return existingPin;
             }
-            const newPin = yield pins_1.Pin.create(pin);
+            const newPin = yield pin_1.Pin.create(pin);
             return newPin;
         }
         catch (error) {

@@ -46,7 +46,7 @@ Pin.init(
     },
     {
         sequelize: sequelize,
-        tableName: "pins",
+        tableName: "Pin",
         timestamps: true,
     }
 );

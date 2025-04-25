@@ -24,7 +24,7 @@ function getSurroundingsInformation(prompt, location) {
                 throw new Error("Location is required");
             }
             const response = yield openaiClient.chat.completions.create({
-                model: "gpt-3.5-turbo",
+                model: "gpt-4o-mini",
                 messages: [
                     {
                         role: "system",
@@ -39,7 +39,8 @@ function getSurroundingsInformation(prompt, location) {
                     },
                     {
                         role: "assistant",
-                        content: `This information is going to be displayed in a web application. Return as json format.`,
+                        content: `This information is going to be displayed in a web application. Return the full response in a JSON format.
+                    "location": location, "response": response`,
                     }
                 ],
             });

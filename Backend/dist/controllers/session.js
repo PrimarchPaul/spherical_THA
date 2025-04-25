@@ -8,7 +8,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const uuid_1 = require("uuid");
 const initSession = (_req, res) => {
     const sid = (0, uuid_1.v4)();
-    const token = jsonwebtoken_1.default.sign({ sid }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token });
+    const secret = process.env.JWT_SECRET;
+    if (!secret)
+        throw new Error('Missing JWT_SECRET');
+    const token = jsonwebtoken_1.default.sign({ sid }, secret, { expiresIn: '1h' });
+    res.json({ token, sessionId: sid });
 };
 exports.initSession = initSession;

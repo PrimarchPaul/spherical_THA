@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPins = getPins;
 exports.postPin = postPin;
 exports.deletePin = deletePin;
-const pins_1 = require("@models/pins");
+const pin_1 = require("@models/pin");
 const mapbox_1 = require("@services/mapbox");
 function getPins(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -23,11 +23,11 @@ function getPins(req, res) {
                 return;
             }
             //get all pins from the session id from the database
-            const pins = yield pins_1.Pin.findAll({
+            const pin = yield pin_1.Pin.findAll({
                 attributes: ['id', 'sessionId', 'longitude', 'latitude', 'pinName', 'pinDescription'],
                 where: { sessionId },
             });
-            res.status(200).json({ pins });
+            res.status(200).json({ pin });
         }
         catch (error) {
             console.error("---controllers::client::getpins---", error);
@@ -71,7 +71,7 @@ function deletePin(req, res) {
                 return;
             }
             //delete all pins from the session id from the database
-            yield pins_1.Pin.destroy({
+            yield pin_1.Pin.destroy({
                 where: { sessionId, id },
             });
             res.status(200).json({ message: "Pins deleted" });

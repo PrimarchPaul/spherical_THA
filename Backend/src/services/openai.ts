@@ -11,7 +11,7 @@ export async function getSurroundingsInformation(prompt: string, location: strin
         }
 
         const response = await openaiClient.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o-mini",
             messages: [
                 {
                     role: "system",
@@ -26,7 +26,8 @@ export async function getSurroundingsInformation(prompt: string, location: strin
                 },
                 {
                     role: "assistant",
-                    content: `This information is going to be displayed in a web application. Return as json format.`,
+                    content: `This information is going to be displayed in a web application. Return the full response in a JSON format.
+                    "location": location, "response": response`,
                 }
             ],
         })

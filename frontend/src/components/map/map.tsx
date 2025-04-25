@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef } from 'react';
 import mapboxgl, {Marker} from 'mapbox-gl';
 import {Pin} from '../../services/index';
+import 'mapbox-gl/dist/mapbox-gl.css'; 
 
 
 

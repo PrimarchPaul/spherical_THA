@@ -32,7 +32,13 @@ function getSurroundingsInformationForUser(req, res) {
                 res.status(400).json({ error: "Longitude must be between -180 and 180" });
                 return;
             }
-            const location = yield (0, mapbox_1.reverseLocation)(latitude, longitude);
+            if (isNaN(latitude) || isNaN(longitude)) {
+                res.status(400).json({ error: "Latitude and longitude must be numbers" });
+                return;
+            }
+            const latNum = parseFloat(latitude);
+            const lngNum = parseFloat(longitude);
+            const location = yield (0, mapbox_1.reverseLocation)(latNum, lngNum);
             if (!location) {
                 res.status(500).json({ error: "Failed to get location" });
                 return;

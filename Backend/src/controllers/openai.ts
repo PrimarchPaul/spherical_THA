@@ -25,7 +25,15 @@ export async function getSurroundingsInformationForUser(req: Request, res: Respo
             return;
         }
 
-        const location = await reverseLocation(latitude, longitude);
+        if (isNaN(latitude) || isNaN(longitude)) {
+            res.status(400).json({ error: "Latitude and longitude must be numbers" });
+            return;
+        }
+
+        const latNum = parseFloat(latitude);
+        const lngNum = parseFloat(longitude);
+
+        const location = await reverseLocation(latNum, lngNum);
         
         if(!location) {
             res.status(500).json({ error: "Failed to get location" });
