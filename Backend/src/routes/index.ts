@@ -6,8 +6,8 @@ import { verifyJWT } from "@middlewares/jwtAuth";
 
 const router = Router();
 
-router.use(verifyJWT)
 router.use("/session", initSession)
+router.use(verifyJWT)
 router.use("/chat", openAiRoutes)
 router.use("/pin", pinsRoutes)
 

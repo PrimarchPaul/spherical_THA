@@ -15,12 +15,14 @@ export function verifyJWT(
   const auth = req.header('Authorization');
 
   if (!auth?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'No token provided or incorrectly formatted' });
+    res.status(401).json({ error: 'No token provided or incorrectly formatted' });
+    return 
   }
 
   const token = auth.slice(7);
     if (!token) {
-        return res.status(401).json({ error: 'No token provided or incorrectly formatted' });
+      res.status(401).json({ error: 'No token provided or incorrectly formatted' });
+      return;
     }
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
@@ -29,6 +31,7 @@ export function verifyJWT(
     
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    res.status(401).json({ error: 'Invalid or expired token' });
+    return;
   }
 }
