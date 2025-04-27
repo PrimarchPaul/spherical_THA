@@ -8,7 +8,7 @@ export const initSession: RequestHandler = (_req, res) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error('Missing JWT_SECRET');
   const token = jwt.sign({ sid }, secret, { expiresIn: '1h' });
-
+  const refreshToken = jwt.sign({ sid }, secret,{ expiresIn: '7d' });
  
-  res.json({ token, sessionId: sid });
+  res.json({ token, refreshToken, sessionId: sid });
 };

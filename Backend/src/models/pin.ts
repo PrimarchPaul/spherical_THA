@@ -2,7 +2,7 @@ import { sequelize } from "@services/database";
 import { DataTypes, Model } from "sequelize";
 
 export class Pin extends Model {
-    public id!: number;
+    public id!: string;
     public sessionId!: string;
     public longitude!: number;
     public latitude!: number;
@@ -14,14 +14,14 @@ export class Pin extends Model {
 Pin.init(
     {
         sessionId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false,
-            primaryKey: true,
         },
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             autoIncrement: true,
             allowNull: false,
+            primaryKey: true,
         },
         
         longitude: {

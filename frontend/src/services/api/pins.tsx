@@ -1,46 +1,12 @@
 export class Pin {
-    public id!: number;
+    public id!: string;
+    public sessionId!: string;
     public longitude!: number;
     public latitude!: number;
     public pinName!: string;
     public pinDescription!: string;
 }
 
-export interface ChatMessage {
-    sender: 'user' | 'assistant';
-    text: string;
-  }
-
-export async function getOpenAiResponse(prompt: string, lat: number, lng: number): Promise<ChatMessage>{
-    try{
-
-        if(!prompt){
-            throw new Error("Prompt is required")
-        }
-        const response = await fetch('http://localhost:8080/chat/surroundings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                latitude: lat,
-                longitude: lng
-            })
-        })
-        if(!response.ok){
-            throw new Error("Failed to fetch data from OpenAI")
-        }
-        
-        return response.json()
-
-    }catch(e){
-        console.log(e);
-        throw new Error("An error occurred while fetching OpenAI response");
-    }
-    
-}
 
 export async function savePin(pin: any) {
     try{
@@ -54,13 +20,13 @@ export async function savePin(pin: any) {
                 'Content-Type': 'application/json',
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify(pin)
+            body: JSON.stringify({pin})
         })
         if(!response.ok){
             throw new Error("Failed to save pin")
         }
-        
-        return await response.json()
+        const { pin: savedPin } = await response.json()
+        return savedPin
 
     }catch(e){
         console.log(e)
@@ -78,6 +44,8 @@ export async function deletePin(sessionId: string, pinId: string) {
             throw new Error("Session ID is required")
         }
 
+        console.log("services/api/pins.tsx/deletePin- session:", sessionId," pinid:", pinId)
+
         const response = await fetch(`http://localhost:8080/pin/deletepin/${pinId}/${sessionId}`, {
             method: 'DELETE',
             headers: {
@@ -88,6 +56,8 @@ export async function deletePin(sessionId: string, pinId: string) {
         if(!response.ok){
             throw new Error("Failed to delete pin")
         }
+
+        
         
         return await response.json()
 
@@ -103,6 +73,8 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
             throw new Error("Session ID is required")
         }
 
+        console.log("📡 [getPins] fetching for session", sessionId);
+
         const response = await fetch(`http://localhost:8080/pin/allPins/${sessionId}`, {
             method: 'GET',
             headers: {
@@ -115,16 +87,20 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
         }
         
         const allPins = await response.json()
-
-        if(Array.isArray(allPins)){
-            return allPins as Pin[]
-        }else if (Array.isArray((allPins as any).pins)) {
-            return (allPins as any).pins;
-          } else if (Array.isArray((allPins as any).data)) {
-            return (allPins as any).data;
-          }
-
-        
+        console.log("📡 [getPins] response: ", allPins);
+        if (Array.isArray(allPins.pin)) {
+            return allPins.pin as Pin[];
+        }
+        if (Array.isArray(allPins.pins)) {
+            return allPins.pins as Pin[];
+        }
+        if (Array.isArray(allPins.data)) {
+            return allPins.data as Pin[];
+        }
+        if (Array.isArray(allPins)) {
+            return allPins as Pin[];
+        }
+        console.warn("Did not retrieve all pins, returning empty array");
         return [];
 
     }catch(e){

@@ -22,7 +22,7 @@ const MapboxGeocoding = (0, geocoding_1.default)(mapboxClient);
 function reverseLocation(lat, lng) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (!lat || !lng) {
+            if (lat == null || lng == null) {
                 throw new Error('Latitude and longitude are required');
             }
             if (lat < -90 || lat > 90) {
@@ -32,7 +32,7 @@ function reverseLocation(lat, lng) {
                 throw new Error('Longitude must be between -180 and 180');
             }
             const response = yield MapboxGeocoding.reverseGeocode({
-                query: [lat, lng],
+                query: [lng, lat],
                 limit: 1,
             }).send();
             if (!response || !response.body || !response.body.features || response.body.features.length === 0) {
@@ -63,6 +63,9 @@ function savePin(pin) {
                 return existingPin;
             }
             const newPin = yield pin_1.Pin.create(pin);
+            if (!newPin) {
+                throw new Error('Failed to create pin');
+            }
             return newPin;
         }
         catch (error) {

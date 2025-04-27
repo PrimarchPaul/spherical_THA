@@ -53,21 +53,20 @@ export async function postPin(req: Request, res: Response) {
 
 export async function deletePin(req: Request, res: Response) {
     try{
-        const { sessionId, id } = req.params;
+        const { sessionId, pinId } = req.params;
 
         if (!sessionId) {
             res.status(400).json({ error: "No session ID" });
             return;
         }
 
-        if(!id) {
+        if(!pinId) {
             res.status(400).json({ error: "No pin ID" });
             return;
         }
 
-        //delete all pins from the session id from the database
         await Pin.destroy({
-            where: { sessionId, id },
+            where: { sessionId, id: pinId },
         })
 
         res.status(200).json({ message: "Pins deleted" });

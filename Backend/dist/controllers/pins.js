@@ -61,18 +61,17 @@ function postPin(req, res) {
 function deletePin(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { sessionId, id } = req.params;
+            const { sessionId, pinId } = req.params;
             if (!sessionId) {
                 res.status(400).json({ error: "No session ID" });
                 return;
             }
-            if (!id) {
+            if (!pinId) {
                 res.status(400).json({ error: "No pin ID" });
                 return;
             }
-            //delete all pins from the session id from the database
             yield pin_1.Pin.destroy({
-                where: { sessionId, id },
+                where: { sessionId, id: pinId },
             });
             res.status(200).json({ message: "Pins deleted" });
         }

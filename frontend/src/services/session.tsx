@@ -1,30 +1,20 @@
-/*
-export async function getSID(){
-    try{
-        const response = await fetch('http://localhost:8080/session', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
 
-        if(!response.ok){
-            throw new Error("Failed to get session ID")
-        }
-
-        const data = await response.json()
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('sessionId', data.sessionId)
-    }catch(e){
-        console.log(e)
-    }
-}
-*/
 
 export async function getSID(): Promise<string> {
+
+    const currentSessionId = localStorage.getItem('sessionId');
+    if (currentSessionId) {
+      return currentSessionId;
+    }
+
     const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Auth token is missing');
+    
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
   
     const response = await fetch('http://localhost:8080/session', {
@@ -33,6 +23,7 @@ export async function getSID(): Promise<string> {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
+      credentials: 'include'
     });
   
     if (!response.ok) {
@@ -41,7 +32,7 @@ export async function getSID(): Promise<string> {
   
  
     const data = await response.json();
-    const { token: newToken, sessionId } = data;
+    const { token: newToken, sessionId, } = data;
 
     if (!sessionId) {
       throw new Error('Session ID is not returned by server');

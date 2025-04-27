@@ -12,6 +12,7 @@ const initSession = (_req, res) => {
     if (!secret)
         throw new Error('Missing JWT_SECRET');
     const token = jsonwebtoken_1.default.sign({ sid }, secret, { expiresIn: '1h' });
-    res.json({ token, sessionId: sid });
+    const refreshToken = jsonwebtoken_1.default.sign({ sid }, secret, { expiresIn: '7d' });
+    res.json({ token, refreshToken, sessionId: sid });
 };
 exports.initSession = initSession;
