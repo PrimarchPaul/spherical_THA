@@ -21,7 +21,7 @@ const MapPage: React.FC = () => {
       try {
 
         const sid = await getSID();
-        console.log("auth token: ", localStorage.getItem("token"))
+        
 
         if (!sid) {
             console.error('Session ID is not set');
@@ -29,13 +29,13 @@ const MapPage: React.FC = () => {
         }
         setSessionId(sid);
         try{
-            console.log("Fetching pins for session ID mapPage: ", sid)
+            
             const data = await getPins(sid);
             if(!data){
                 console.error("No data returned from server");
                 return;
             }
-            console.log("Fetched pins: ", data);
+            
             setPins(Array.isArray(data) ? data : []);
         }catch{
             console.error("Error fetching pins, loading no pins");

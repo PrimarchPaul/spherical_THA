@@ -9,7 +9,7 @@ export async function getOpenAiResponse(prompt: string, lat: number, lng: number
         if(!prompt){
             throw new Error("Prompt is required")
         }
-        const response = await fetch('http://localhost:8080/chat/surroundings', {
+        const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/chat/surroundings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export async function getOpenAiResponse(prompt: string, lat: number, lng: number
             throw new Error("Failed to fetch data from OpenAI")
         }
 
-        console.log("OpenAI response from services/api/openai: ", response)
+        
         
         return response.json()
 

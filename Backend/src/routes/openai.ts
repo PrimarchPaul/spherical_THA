@@ -1,6 +1,5 @@
 import { getSurroundingsInformationForUser } from "@controllers/openai";
 import { Router } from "express";
-import { verifyJWT } from "@middlewares/jwtAuth";
 
 const router = Router();
 

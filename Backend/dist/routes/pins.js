@@ -6,4 +6,5 @@ const router = (0, express_1.Router)();
 router.get("/allPins/:sessionId", pins_1.getPins);
 router.post("/savepin", pins_1.postPin);
 router.delete("/deletepin/:pinId/:sessionId", pins_1.deletePin);
+router.put("/updatepin", pins_1.updatePin);
 exports.default = router;

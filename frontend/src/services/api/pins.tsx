@@ -10,11 +10,12 @@ export class Pin {
 
 export async function savePin(pin: any) {
     try{
+
         if(!pin){
             throw new Error("Pin is required")
-        }
+        }        
 
-        const response = await fetch('http://localhost:8080/pin/savepin', {
+        const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/pin/savepin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,9 +23,11 @@ export async function savePin(pin: any) {
             },
             body: JSON.stringify({pin})
         })
+
         if(!response.ok){
             throw new Error("Failed to save pin")
         }
+
         const { pin: savedPin } = await response.json()
         return savedPin
 
@@ -44,9 +47,8 @@ export async function deletePin(sessionId: string, pinId: string) {
             throw new Error("Session ID is required")
         }
 
-        console.log("services/api/pins.tsx/deletePin- session:", sessionId," pinid:", pinId)
 
-        const response = await fetch(`http://localhost:8080/pin/deletepin/${pinId}/${sessionId}`, {
+        const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/pin/deletepin/${pinId}/${sessionId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,8 +58,6 @@ export async function deletePin(sessionId: string, pinId: string) {
         if(!response.ok){
             throw new Error("Failed to delete pin")
         }
-
-        
         
         return await response.json()
 
@@ -73,9 +73,7 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
             throw new Error("Session ID is required")
         }
 
-        console.log("📡 [getPins] fetching for session", sessionId);
-
-        const response = await fetch(`http://localhost:8080/pin/allPins/${sessionId}`, {
+        const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/pin/allPins/${sessionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,24 +85,40 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
         }
         
         const allPins = await response.json()
-        console.log("📡 [getPins] response: ", allPins);
-        if (Array.isArray(allPins.pin)) {
-            return allPins.pin as Pin[];
-        }
-        if (Array.isArray(allPins.pins)) {
-            return allPins.pins as Pin[];
-        }
-        if (Array.isArray(allPins.data)) {
-            return allPins.data as Pin[];
-        }
-        if (Array.isArray(allPins)) {
-            return allPins as Pin[];
-        }
-        console.warn("Did not retrieve all pins, returning empty array");
-        return [];
+        
+        return allPins.pin as Pin[] || [];
 
     }catch(e){
         console.log(e)
         throw new Error("An error occurred while fetching Pins from database");
     }
+}
+
+export async function updatePin(pin: Pin) {
+    try{
+        
+        if(!pin){
+            throw new Error("Pin is required")
+        }
+
+        const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/pin/updatepin`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({pin})
+        })
+
+        if(!response.ok){
+            throw new Error("Failed to update pin")
+        }
+
+        const { pin: updatedPin } = await response.json()
+        return updatedPin
+
+    }catch(e){
+        console.log(e)
+    }
+    
 }

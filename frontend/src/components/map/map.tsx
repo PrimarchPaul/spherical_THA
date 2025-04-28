@@ -102,8 +102,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, sessionId,onPinSelect, onMapCli
                     console.error('Unexpected p.id shape:', p.id);
                     rawId = JSON.stringify(p.id);
                 }
-               console.log('testing delete marker: ', p.id, " rawId: ", rawId); 
-               console.log("test: ", p.id)
+              
                 try{
                     const test = await deletePin(sessionId, rawId);
                     if(!test){

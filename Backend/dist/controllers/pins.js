@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPins = getPins;
 exports.postPin = postPin;
 exports.deletePin = deletePin;
+exports.updatePin = updatePin;
 const pin_1 = require("@models/pin");
 const mapbox_1 = require("@services/mapbox");
 function getPins(req, res) {
@@ -78,6 +79,30 @@ function deletePin(req, res) {
         catch (error) {
             console.error("---controllers::client::deletepins---", error);
             res.status(500).json({ error: "Failed to delete pins" });
+            return;
+        }
+    });
+}
+function updatePin(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { pin } = req.body;
+            if (!pin || !pin.id) {
+                res.status(400).json({ error: "Pin with a valid id is required" });
+                return;
+            }
+            const updatedPin = yield pin_1.Pin.update(pin, {
+                where: { id: pin.id },
+            });
+            if (!updatedPin) {
+                res.status(500).json({ error: "Failed to update pin" });
+                return;
+            }
+            res.status(200).json({ message: "Pin updated" });
+        }
+        catch (error) {
+            console.error("---controllers::client::updatepins---", error);
+            res.status(500).json({ error: "Failed to update pins" });
             return;
         }
     });

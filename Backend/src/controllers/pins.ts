@@ -76,3 +76,29 @@ export async function deletePin(req: Request, res: Response) {
         return;
     }
 }
+
+export async function updatePin(req: Request, res: Response) {
+    try {
+        const { pin } = req.body;
+
+        if (!pin || !pin.id) {
+            res.status(400).json({ error: "Pin with a valid id is required" });
+            return;
+        }
+
+        const updatedPin = await Pin.update(pin, {
+            where: { id: pin.id },
+        });
+
+        if (!updatedPin) {
+            res.status(500).json({ error: "Failed to update pin" });
+            return;
+        }
+
+        res.status(200).json({ message: "Pin updated" });
+    } catch (error) {
+        console.error("---controllers::client::updatepins---", error);
+        res.status(500).json({ error: "Failed to update pins" });
+        return;
+    }
+}

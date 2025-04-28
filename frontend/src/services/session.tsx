@@ -17,22 +17,17 @@ export async function getSID(): Promise<string> {
       headers['Authorization'] = `Bearer ${token}`;
     }
   
-    const response = await fetch('http://localhost:8080/session', {
+    const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/session`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: 'include'
+      headers
     });
   
     if (!response.ok) {
       throw new Error(`Failed to initialize session: ${response.status}`);
     }
-  
- 
+
     const data = await response.json();
-    const { token: newToken, sessionId, } = data;
+    const { token: newToken, refreshToken, sessionId} = data;
 
     if (!sessionId) {
       throw new Error('Session ID is not returned by server');
@@ -42,6 +37,7 @@ export async function getSID(): Promise<string> {
     }
   
     localStorage.setItem('token', newToken);
+    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('sessionId', sessionId);
   
     return sessionId;

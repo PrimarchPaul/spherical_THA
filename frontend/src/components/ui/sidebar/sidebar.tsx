@@ -4,13 +4,15 @@ import './sidebar.css';
 
 import {
   savePin,
-  Pin
+  Pin,
+  updatePin
 } from '../../../services/api/pins';
 
 import { 
   getOpenAiResponse, 
   ChatMessage 
 } from '../../../services/api/openai';
+import { on } from 'events';
 
 interface SidebarProps {
   sessionId: string;
@@ -53,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sessionId, coords, existingPin, onClo
       return;
     }
     
-    const newPin: Pin = {
+    const pinObj: Pin = {
       id: isNew ? uuidv4() : existingPin!.id,
       sessionId,
       longitude: coords[0],
@@ -63,9 +65,15 @@ const Sidebar: React.FC<SidebarProps> = ({ sessionId, coords, existingPin, onClo
     };
     
     try {
-      const savedId = await savePin(newPin);
-      newPin.id = savedId || newPin.id;
-      onSave(newPin);
+      if (isNew) {
+      const savedId = await savePin(pinObj);
+      pinObj.id = savedId || pinObj.id;
+      onSave(pinObj);
+      }else{
+        await updatePin(pinObj);
+        onSave(pinObj);
+      }
+      
       onClose();
     } catch (e) {
       console.error('Save failed', e);

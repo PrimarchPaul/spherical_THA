@@ -3,6 +3,7 @@ import 'module-alias/register';
 import express, {Express} from 'express';
 import dotenv from 'dotenv';
 import router from '@routes/index';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 dotenv.config({path: path.join(__dirname, '../.env')})
@@ -35,6 +36,7 @@ server.use(
 
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
+server.use(cookieParser())
 server.use("/", router)
 
 server.listen(PORT, () => {
