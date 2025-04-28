@@ -69,9 +69,12 @@ export async function deletePin(sessionId: string, pinId: string) {
 
 export async function getPins(sessionId: string): Promise<Pin[]>{
     try{
+
         if(!sessionId){
             throw new Error("Session ID is required")
         }
+
+        console.log("getPins Session ID: ", sessionId)
 
         const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/pin/allPins/${sessionId}`, {
             method: 'GET',
@@ -80,6 +83,10 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         })
+
+        const test = await response.json()
+        console.log("getPins response: ", test)
+        
         if(!response.ok){
             throw new Error("Failed to get pin")
         }

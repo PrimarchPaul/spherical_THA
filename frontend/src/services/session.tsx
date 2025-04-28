@@ -18,7 +18,6 @@ export async function getSID(): Promise<string> {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-  
     const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/session`, {
       method: 'GET',
       headers
