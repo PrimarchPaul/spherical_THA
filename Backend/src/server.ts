@@ -29,7 +29,7 @@ server.use(
         return callback(new Error(`CORS policy: origin "${incomingOrigin}" not allowed`));
       },
       credentials: true,
-      allowedHeaders: ['Content-Type','Authorization'],
+      allowedHeaders: ['Content-Type','Authorization','ngrok-skip-browser-warning'],
       methods: ['GET','POST','PUT','DELETE','OPTIONS'],
     })
   )
