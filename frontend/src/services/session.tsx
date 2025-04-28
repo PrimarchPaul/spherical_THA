@@ -32,7 +32,8 @@ export async function getSID(): Promise<string> {
       throw new Error(`Failed to initialize session: ${response.status}`);
     }
 
-    console.log("Response: ", response);
+    const responseText = await response.text();
+    console.log("Response: ", responseText);
     console.log("Response status: ", response.status);
 
     const data = await response.json();
