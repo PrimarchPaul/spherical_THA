@@ -79,21 +79,23 @@ export async function deletePin(req: Request, res: Response) {
 
 export async function updatePin(req: Request, res: Response) {
     try {
-        const { pin } = req.body;
 
-        if (!pin || !pin.id) {
-            res.status(400).json({ error: "Pin with a valid id is required" });
-            return;
-        }
+    const { pin } = req.body;
+    const dbId: string = pin.id.id;
+   
+    const updateData: Partial<Pin> = {
+      pinName:        pin.pinName,
+      pinDescription: pin.pinDescription
+    };
 
-        const updatedPin = await Pin.update(pin, {
-            where: { id: pin.id },
-        });
+    const [affectedRows] = await Pin.update(updateData, {
+      where: { id: dbId },
+    });
 
-        if (!updatedPin) {
-            res.status(500).json({ error: "Failed to update pin" });
-            return;
-        }
+    if (affectedRows === 0) {
+      res.status(404).json({ error: "No pin found with that ID" });
+      return 
+    }
 
         res.status(200).json({ message: "Pin updated" });
     } catch (error) {

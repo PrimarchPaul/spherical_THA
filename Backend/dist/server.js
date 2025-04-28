@@ -27,10 +27,9 @@ server.use((0, cors_1.default)({
         return callback(new Error(`CORS policy: origin "${incomingOrigin}" not allowed`));
     },
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
-//server.options(/(.*)/,cors())
 server.use(express_1.default.json());
 server.use(express_1.default.urlencoded({ extended: true }));
 server.use((0, cookie_parser_1.default)());

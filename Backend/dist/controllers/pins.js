@@ -87,15 +87,16 @@ function updatePin(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { pin } = req.body;
-            if (!pin || !pin.id) {
-                res.status(400).json({ error: "Pin with a valid id is required" });
-                return;
-            }
-            const updatedPin = yield pin_1.Pin.update(pin, {
-                where: { id: pin.id },
+            const dbId = pin.id.id;
+            const updateData = {
+                pinName: pin.pinName,
+                pinDescription: pin.pinDescription
+            };
+            const [affectedRows] = yield pin_1.Pin.update(updateData, {
+                where: { id: dbId },
             });
-            if (!updatedPin) {
-                res.status(500).json({ error: "Failed to update pin" });
+            if (affectedRows === 0) {
+                res.status(404).json({ error: "No pin found with that ID" });
                 return;
             }
             res.status(200).json({ message: "Pin updated" });
