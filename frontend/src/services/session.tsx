@@ -16,6 +16,12 @@ export async function getSID(): Promise<string> {
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
+
+    console.log("Fetching new session ID");
+    console.log("Token: ", token);
+    console.log("Headers: ", headers);
+    console.log("URL: ", `${process.env.REACT_APP_PROD_API_URL}/session`);
+    console.log("Method: ", process.env.REACT_APP_PROD_API_URL);
   
     const response = await fetch(`${process.env.REACT_APP_PROD_API_URL}/session`, {
       method: 'GET',
@@ -25,6 +31,9 @@ export async function getSID(): Promise<string> {
     if (!response.ok) {
       throw new Error(`Failed to initialize session: ${response.status}`);
     }
+
+    console.log("Response: ", response);
+    console.log("Response status: ", response.status);
 
     const data = await response.json();
     const { token: newToken, refreshToken, sessionId} = data;
