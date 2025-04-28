@@ -85,10 +85,6 @@ export async function getPins(sessionId: string): Promise<Pin[]>{
             }
         })
 
-
-        const test = await response.text()
-        console.log("getPins response: ", test)
-
         if(!response.ok){
             throw new Error("Failed to get pin")
         }
