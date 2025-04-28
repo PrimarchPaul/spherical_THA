@@ -16,7 +16,7 @@ const server = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 const raw = process.env.CORS_WHITELIST || '';
-const WHITELIST = raw.split(',').map(origin => origin.trim()).filter(Boolean);
+const WHITELIST = raw.split(',').map(origin => origin.trim());
 server.use((0, cors_1.default)({
     origin: (incomingOrigin, callback) => {
         if (!incomingOrigin)
@@ -30,6 +30,7 @@ server.use((0, cors_1.default)({
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
+//server.options(/(.*)/,cors())
 server.use(express_1.default.json());
 server.use(express_1.default.urlencoded({ extended: true }));
 server.use((0, cookie_parser_1.default)());

@@ -5,7 +5,7 @@ dotenv.config();
 
 //for local development
 
-/*
+
 const sequelize = new Sequelize(
     process.env.DB_POSTGRESQL_DATABASE as string,
     process.env.DB_POSTGRESQL_USERNAME as string,
@@ -36,9 +36,8 @@ const testConnection = async () => {
 export { sequelize, testConnection };
 
 
-*/
 //for production
-
+/*
 
 const conn = process.env.DB_CONNECTION as string;
 if(!conn) {
@@ -65,3 +64,5 @@ const testConnection = async () => {
 }
 
 export { sequelize, testConnection };
+
+*/

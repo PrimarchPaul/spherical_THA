@@ -14,7 +14,7 @@ const HOST = process.env.HOST || 'localhost'
 
 
 const raw = process.env.CORS_WHITELIST || '';
-const WHITELIST = raw.split(',').map(origin => origin.trim()).filter(Boolean);
+const WHITELIST = raw.split(',').map(origin => origin.trim())
 
 
 server.use(

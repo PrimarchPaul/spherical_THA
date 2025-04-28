@@ -42,6 +42,7 @@ const testConnection = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.testConnection = testConnection;
 //for production
 /*
+
 const conn = process.env.DB_CONNECTION as string;
 if(!conn) {
     throw new Error("DB_CONNECTION is not set");
@@ -67,4 +68,5 @@ const testConnection = async () => {
 }
 
 export { sequelize, testConnection };
+
 */ 
