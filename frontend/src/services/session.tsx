@@ -11,6 +11,7 @@ export async function getSID(): Promise<string> {
     
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420', //pls don't judge me too hard on this i was bored
     };
     
     if (token) {
