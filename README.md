@@ -1,3 +1,3 @@
-Hello Micah and other devs! 
+*** SERVER IS DOWN, APP WILL NOT WORK ***
 
-Thank you for the extension, this is the monorepo for my submission for the spherical take home challenge
+Take home assessment for Spherical 
